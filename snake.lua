@@ -17,10 +17,6 @@ function Snake:new(idx, str)
   o.startj = tonumber(string.sub(str,2,2))
   o.orient = tonumber(string.sub(str,3,3))
   o.str = string.sub(str,4,-1)
-  print (o.starti)
-  print (o.startj)
-  print (o.orient)
-  print (o.str)
   return o
 end
 

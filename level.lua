@@ -8,13 +8,22 @@ function Level:new(filename)
   local o = {}
   setmetatable(o, Level)
   o.snakes = {}
+  o.tiles = {}
   i = 1
   for l in love.filesystem.lines('levels/' .. filename .. '.lvl') do
-    table.insert(o.snakes, Snake:new(i, l))
+    if i < 7 then
+      table.insert(o.snakes, Snake:new(i, l))
+    else
+      table.insert(o.tiles, l)
+    end
     i = i + 1
   end
   o.selected = nil
   return o
+end
+
+function Level:valid_tile(i,j)
+  return string.sub(self.tiles[j], i, i) == '.'
 end
 
 function Level:draw()
@@ -24,7 +33,9 @@ function Level:draw()
     for j = 1, hexcnts[i] do
       px = hexx(i,j)
       py = hexy(i,j)
-      love.graphics.draw(img['hex'], px, py, 0, 1, 1, 48, 48 )
+      if self:valid_tile(i,j) then
+        love.graphics.draw(img['hex'], px, py, 0, 1, 1, 48, 48 )
+      end
       love.graphics.print(i..','..j, px+8, py+22)
     end
   end

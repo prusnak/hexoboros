@@ -13,7 +13,7 @@ function love.load()
   img['snakeL'] = love.graphics.newImage('images/snakell.png')
   img['snaker'] = love.graphics.newImage('images/snaker.png')
   img['snakeR'] = love.graphics.newImage('images/snakerr.png')
-  level = Level:new('level1')
+  level = Level:new('level2')
 end
 
 function love.update()
