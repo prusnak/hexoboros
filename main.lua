@@ -24,6 +24,7 @@ function love.draw()
 end
 
 function love.mousepressed(x, y, button)
+  level:click(x, y, button)
 end
 
 function love.mousereleased(x, y, button)

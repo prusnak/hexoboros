@@ -8,20 +8,17 @@ function Level:new(filename)
   local o = {}
   setmetatable(o, Level)
   o.snakes = {}
+  i = 1
   for l in love.filesystem.lines('levels/' .. filename .. '.lvl') do
-    table.insert(o.snakes, Snake:new(l))
+    table.insert(o.snakes, Snake:new(i, l))
+    i = i + 1
   end
+  o.selected = nil
   return o
 end
 
 function Level:draw()
   love.graphics.draw(img['back'], 0, 0)
-  love.graphics.draw(img['header'], 768, 16)
-
-  for i = 1, 5 do
-    love.graphics.draw(img['slot'], 768, i*128)
-    love.graphics.draw(img['slot'], 898, i*128)
-  end
 
   for i = 1, 9 do
     for j = 1, hexcnts[i] do
@@ -34,7 +31,48 @@ function Level:draw()
 
   for i = 1, # self.snakes do
     s = self.snakes[i]
-    s:draw()
+    if self.selected == i then
+      s:draw(true)
+    else
+      s:draw()
+    end
   end
 
+end
+
+function Level:click(x, y, button)
+  -- find clicked tile
+  ci = nil
+  cj = nil
+  for i = 1, 9 do
+    for j = 1, hexcnts[i] do
+      if math.abs(hexx(i,j)-x) < 40 and math.abs(hexy(i,j)-y) < 40 then
+        ci = i
+        cj = j
+      end
+    end
+  end
+  -- was there a tile click?
+  if ci and cj then
+    if self.selected then -- holding snake ? => drop it
+      self.snakes[self.selected].starti = ci
+      self.snakes[self.selected].startj = cj
+      self.selected = nil
+      return
+    end
+    for i = 1, # self.snakes do -- find snake
+      s = self.snakes[i]
+      if s.starti == ci and s.startj == cj then
+        if button == 'l' then
+          self.selected = i
+        end
+        if button == 'r' then
+          s.orient = (s.orient + 1) % 6
+        end
+        if button == 'm' then
+          s.orient = (s.orient + 5) % 6
+        end
+      end
+    end
+  end
 end
