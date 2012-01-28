@@ -20,32 +20,55 @@ function Snake:new(str)
 end
 
 function Snake:draw()
-  cx = hexx(self.starti, self.startj)
-  cy = hexy(self.starti, self.startj)
+  ci = self.starti
+  cj = self.startj
   co = self.orient
   for c in string.gmatch(self.str, '.') do
     -- render
     if c == 'H' then
-      love.graphics.draw(img['snakeH'], cx, cy, hexorient[co+1], 1, 1, 48, 48)
+      love.graphics.draw(img['snakeH'], hexx(ci, cj), hexy(ci, cj), hexorient[co+1], 1, 1, 48, 48)
     elseif c == 'S' then
-      love.graphics.draw(img['snakeS'], cx, cy, hexorient[co+1], 1, 1, 48, 48)
+      love.graphics.draw(img['snakeS'], hexx(ci, cj), hexy(ci, cj), hexorient[co+1], 1, 1, 48, 48)
     elseif c == 'T' then
-      love.graphics.draw(img['snakeT'], cx, cy, hexorient[co+1], 1, 1, 48, 48)
+      love.graphics.draw(img['snakeT'], hexx(ci, cj), hexy(ci, cj), hexorient[co+1], 1, 1, 48, 48)
     elseif c == 'l' then
-      love.graphics.draw(img['snakel'], cx, cy, hexorient[co+1], 1, 1, 48, 48)
+      love.graphics.draw(img['snakel'], hexx(ci, cj), hexy(ci, cj), hexorient[co+1], 1, 1, 48, 48)
       co = (co + 5) % 6
     elseif c == 'L' then
-      love.graphics.draw(img['snakeL'], cx, cy, hexorient[co+1], 1, 1, 48, 48)
+      love.graphics.draw(img['snakeL'], hexx(ci, cj), hexy(ci, cj), hexorient[co+1], 1, 1, 48, 48)
       co = (co + 4) % 6
     elseif c == 'r' then
-      love.graphics.draw(img['snaker'], cx, cy, hexorient[co+1], 1, 1, 48, 48)
+      love.graphics.draw(img['snaker'], hexx(ci, cj), hexy(ci, cj), hexorient[co+1], 1, 1, 48, 48)
       co = (co + 1) % 6
     elseif c == 'R' then
-      love.graphics.draw(img['snakeR'], cx, cy, hexorient[co+1], 1, 1, 48, 48)
+      love.graphics.draw(img['snakeR'], hexx(ci, cj), hexy(ci, cj), hexorient[co+1], 1, 1, 48, 48)
       co = (co + 2) % 6
     end
     -- update
-    cx = cx - math.sin(hexorient[co+1])*85
-    cy = cy + math.cos(hexorient[co+1])*81
+    if co == 0 then
+      cj = cj + 1
+    elseif co == 1 then
+      ci = ci - 1
+      if ci >= 5 then
+        cj = cj +1
+      end
+    elseif co == 2 then
+      ci = ci - 1
+      if ci < 5 then
+        cj = cj - 1
+      end
+    elseif co == 3 then
+      cj = cj - 1
+    elseif co == 4 then
+      ci = ci + 1
+      if ci > 5 then
+        cj = cj - 1
+      end
+    elseif co == 5 then
+      ci = ci + 1
+      if ci <= 5 then
+        cj = cj + 1
+      end
+    end
   end
 end
