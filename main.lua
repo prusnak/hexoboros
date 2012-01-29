@@ -34,6 +34,7 @@ function love.load()
 
   snd['music']:setLooping(true)
   love.audio.play(snd['music'])
+
 end
 
 function love.update(dt)

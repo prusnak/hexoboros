@@ -22,6 +22,7 @@ function Level:new(filename)
   end
   o.selected = nil
   o.winning = 0.0
+  o.title = filename
   return o
 end
 
@@ -29,15 +30,15 @@ function Level:draw()
   love.graphics.setColor(255, 255, 255, 224)
   for i = 1, 9 do
     for j = 1, hexcnts[i] do
-      px = hexx(i,j)
-      py = hexy(i,j)
-      if self.winning > 0.0 then
-        px = px + math.random(0,6*self.winning*self.winning)
-        py = py + math.random(0,6*self.winning*self.winning)
-      end
+      local px = hexx(i,j)
+      local py = hexy(i,j)
       if hex_valid(i,j) then
+        if self.winning > 0.0 then
+          px = px + math.random(0,6*self.winning*self.winning)
+          py = py + math.random(0,6*self.winning*self.winning)
+        end
         love.graphics.draw(img['hex'], px, py, 0, 1, 1, 48, 48)
-        -- love.graphics.print(i..','..j, px+8, py+22)
+--        love.graphics.print(i..','..j, px+8, py+22)
       end
     end
   end
@@ -59,6 +60,15 @@ function Level:draw()
       s:draw_head(false, self.winning)
     end
   end
+
+  if self.winning > 0.75 then
+    local a = (self.winning - 0.75) * 4
+    love.graphics.setColor(255, 255, 255, a*a*255)
+    love.graphics.rectangle('fill', 0, 0, 1024, 768)
+  end
+  love.graphics.setColor(255, 255, 255, 255)
+
+  love.graphics.print(self.title, 10, 10)
 
 end
 
@@ -142,6 +152,10 @@ function Level:update()
   end
   if self.winning > 1.0 then
     particles:setColor(8, 246, 255, 0, 255, 255, 255, 128)
-    level = nil
+    if self.title == 'level1' then
+      level = Level:new('level2')
+    else
+      level = nil
+    end
   end
 end
