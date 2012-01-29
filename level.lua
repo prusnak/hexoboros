@@ -47,6 +47,14 @@ function Level:draw()
       s:draw()
     end
   end
+  for i = 1, # self.snakes do
+    s = self.snakes[i]
+    if self.selected == i then
+      s:draw_head(true)
+    else
+      s:draw_head()
+    end
+  end
 
 end
 

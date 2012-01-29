@@ -20,25 +20,56 @@ function Snake:new(idx, str)
   return o
 end
 
+function Snake:draw_head(transparent)
+  if transparent then
+    alpha = 128
+  else
+    alpha = 255
+  end
+  local rgba
+  if self.idx == 1 then
+    rgba = {249, 23, 32, alpha}
+  elseif self.idx == 2 then
+    rgba = {255, 209, 0, alpha}
+  elseif self.idx == 3 then
+    rgba = {114, 222, 58, alpha}
+  elseif self.idx == 4 then
+    rgba = {0, 214, 253, alpha}
+  elseif self.idx == 5 then
+    rgba = {214, 0, 253, alpha}
+  elseif self.idx == 6 then
+    rgba = {58, 114, 222, alpha}
+  end
+  rx = hexx(self.starti, self.startj)
+  ry = hexy(self.starti, self.startj)
+  love.graphics.setColor(rgba)
+  love.graphics.draw(img['fire'], rx, ry, 0, 2, 2, 16, 16)
+  love.graphics.draw(img['fire'], rx, ry, 0, 2, 2, 16, 16)
+  love.graphics.draw(img['fire'], rx, ry, 0, 2, 2, 16, 16)
+  love.graphics.setColor(255, 255, 255, 255)
+end
+
 function Snake:draw(transparent)
   if transparent then
     alpha = 128
   else
     alpha = 255
   end
+  local rgba
   if self.idx == 1 then
-    love.graphics.setColor(249, 23, 32, alpha)
+    rgba = {249, 23, 32, alpha}
   elseif self.idx == 2 then
-    love.graphics.setColor(255, 209, 0, alpha)
+    rgba = {255, 209, 0, alpha}
   elseif self.idx == 3 then
-    love.graphics.setColor(114, 222, 58, alpha)
+    rgba = {114, 222, 58, alpha}
   elseif self.idx == 4 then
-    love.graphics.setColor(0, 214, 253, alpha)
+    rgba = {0, 214, 253, alpha}
   elseif self.idx == 5 then
-    love.graphics.setColor(214, 0, 253, alpha)
+    rgba = {214, 0, 253, alpha}
   elseif self.idx == 6 then
-    love.graphics.setColor(58, 114, 222, alpha)
+    rgba = {58, 114, 222, alpha}
   end
+  love.graphics.setColor(rgba)
   local ci = self.starti
   local cj = self.startj
   local co = self.orient
@@ -50,24 +81,27 @@ function Snake:draw(transparent)
     end
     -- render
     if c == 'H' then
-      love.graphics.draw(img['snakeH'], rx, ry, hexorient[co+1], 1, 1, 48, 48)
+      -- nothing
     elseif c == 'S' then
-      love.graphics.draw(img['snakeS'], rx, ry, hexorient[co+1], 1, 1, 48, 48)
+      -- nothing
     elseif c == 'T' then
-      love.graphics.draw(img['snakeT'], rx, ry, hexorient[co+1], 1, 1, 48, 48)
+      -- nothing
     elseif c == 'l' then
-      love.graphics.draw(img['snakel'], rx, ry, hexorient[co+1], 1, 1, 48, 48)
       co = (co + 5) % 6
     elseif c == 'L' then
-      love.graphics.draw(img['snakeL'], rx, ry, hexorient[co+1], 1, 1, 48, 48)
       co = (co + 4) % 6
     elseif c == 'r' then
-      love.graphics.draw(img['snaker'], rx, ry, hexorient[co+1], 1, 1, 48, 48)
       co = (co + 1) % 6
     elseif c == 'R' then
-      love.graphics.draw(img['snakeR'], rx, ry, hexorient[co+1], 1, 1, 48, 48)
       co = (co + 2) % 6
     end
+    if c ~= 'H' then
+      for i = 1, 16 do
+        love.graphics.draw(img['fire'], lx+(rx-lx)/16*i, ly+(ry-ly)/16*i, 0, 1, 1, 16, 16)
+      end
+    end
+    lx = rx
+    ly = ry
     -- update
     if co == 0 then
       cj = cj + 1
