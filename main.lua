@@ -2,7 +2,7 @@ require 'level'
 
 function love.load()
   img = {}
-  img['back'] = love.graphics.newImage('images/back.jpg')
+  img['fire'] = love.graphics.newImage('images/fire.png')
   img['hex'] = love.graphics.newImage('images/hex.png')
   img['slot'] = love.graphics.newImage('images/slot.png')
   img['header'] = love.graphics.newImage('images/header.png')
@@ -16,13 +16,34 @@ function love.load()
   snd = {}
   snd['movebad'] = love.audio.newSource('sounds/movebad.ogg', 'static')
   snd['moveok'] = love.audio.newSource('sounds/moveok.ogg', 'static')
-  level = Level:new('level2')
+
+  particles = love.graphics.newParticleSystem(img['fire'], 200)
+  particles:setPosition( 512, 384 )
+  particles:setOffset( 0, 0 )
+  particles:setBufferSize( 1001 )
+  particles:setEmissionRate( 200.5 )
+  particles:setLifetime( -1 )
+  particles:setParticleLife( 5 )
+  particles:setColor( 0, 255, 255, 0, 255, 205, 90, 123 )
+  particles:setSize( 1, 3, 1 )
+  particles:setSpeed( 150, 300  )
+  particles:setDirection( math.rad(90) )
+  particles:setSpread( math.rad(360) )
+  particles:setGravity( 0, 0 )
+  particles:setRotation( math.rad(0), math.rad(0) )
+  particles:setSpin( math.rad(0.5), math.rad(1), 1 )
+  particles:setRadialAcceleration( 0 )
+  particles:setTangentialAcceleration( 0 )
+  particles:start()
+  level = Level:new('level1')
 end
 
-function love.update()
+function love.update(dt)
+  particles:update(dt)
 end
 
 function love.draw()
+  love.graphics.draw(particles, 0, 0)
   level:draw()
 end
 

@@ -25,8 +25,8 @@ function Level:new(filename)
 end
 
 function Level:draw()
-  love.graphics.draw(img['back'], 0, 0)
 
+  love.graphics.setColor(255, 255, 255, 192)
   for i = 1, 9 do
     for j = 1, hexcnts[i] do
       px = hexx(i,j)
@@ -37,6 +37,7 @@ function Level:draw()
       end
     end
   end
+  love.graphics.setColor(255, 255, 255, 255)
 
   for i = 1, # self.snakes do
     s = self.snakes[i]
