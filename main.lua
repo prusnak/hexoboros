@@ -5,11 +5,10 @@ function love.load()
   img['fire'] = love.graphics.newImage('images/fire.png')
   img['hex'] = love.graphics.newImage('images/hex.png')
   img['intro'] = love.graphics.newImage('images/intro.png')
-  img['slot'] = love.graphics.newImage('images/slot.png')
-  img['header'] = love.graphics.newImage('images/header.png')
   snd = {}
   snd['movebad'] = love.audio.newSource('sounds/movebad.ogg', 'static')
   snd['moveok'] = love.audio.newSource('sounds/moveok.ogg', 'static')
+  snd['win'] = love.audio.newSource('sounds/win.ogg', 'static')
   font = love.graphics.newFont('images/cs_regular.ttf', 22)
 
   particles = love.graphics.newParticleSystem(img['fire'], 200)
@@ -21,7 +20,7 @@ function love.load()
   particles:setParticleLife(5)
   particles:setColor(8, 246, 255, 0, 255, 255, 255, 128)
   particles:setSize(1, 3, 1)
-  particles:setSpeed(150, 300 )
+  particles:setSpeed(150, 300)
   particles:setDirection(math.rad(90))
   particles:setSpread(math.rad(360))
   particles:setGravity(0, 0)
@@ -30,11 +29,13 @@ function love.load()
   particles:setRadialAcceleration(0)
   particles:setTangentialAcceleration(0)
   particles:start()
---  level = Level:new('level1')
 end
 
 function love.update(dt)
   particles:update(dt)
+  if level then
+    level:update()
+  end
 end
 
 function love.draw()
@@ -55,9 +56,11 @@ function love.mousepressed(x, y, button)
   if not level then
     if math.abs(y-560) < 40 then
       if math.abs(x-256) < 40 then
+        love.audio.play(snd['moveok'])
         level = Level:new('level1')
       end
       if math.abs(x-768) < 40 then
+        love.audio.play(snd['moveok'])
         love.event.push('q')
       end
     end
@@ -72,6 +75,9 @@ end
 function love.keypressed(key, unicode)
   if key == 'escape' then
     love.event.push('q')
+  end
+  if key == 'w' then
+    level:check_finished()
   end
 end
 

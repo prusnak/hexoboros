@@ -20,7 +20,7 @@ function Snake:new(idx, str)
   return o
 end
 
-function Snake:draw_head(transparent)
+function Snake:draw_head(transparent, winning)
   if transparent then
     alpha = 128
   else
@@ -40,16 +40,27 @@ function Snake:draw_head(transparent)
   elseif self.idx == 6 then
     rgba = {58, 114, 222, alpha}
   end
+  if winning and winning > 0.0 then
+    rgba[1] = rgba[1] + winning*(255-rgba[1])
+    rgba[2] = rgba[2] + winning*(255-rgba[2])
+    rgba[3] = rgba[3] + winning*(255-rgba[3])
+  end
   rx = hexx(self.starti, self.startj)
   ry = hexy(self.starti, self.startj)
-  love.graphics.setColor(rgba)
+  if (love.timer.getTime()*30-4) % 30 < 2 then
+    love.graphics.setColor(255, 255, 255, alpha)
+  else
+    love.graphics.setColor(rgba)
+  end
+  love.graphics.draw(img['fire'], rx, ry, 0, 2, 2, 16, 16)
   love.graphics.draw(img['fire'], rx, ry, 0, 2, 2, 16, 16)
   love.graphics.draw(img['fire'], rx, ry, 0, 2, 2, 16, 16)
   love.graphics.draw(img['fire'], rx, ry, 0, 2, 2, 16, 16)
   love.graphics.setColor(255, 255, 255, 255)
 end
 
-function Snake:draw(transparent)
+function Snake:draw(transparent, winning)
+  local blink = 0
   if transparent then
     alpha = 128
   else
@@ -68,6 +79,11 @@ function Snake:draw(transparent)
     rgba = {214, 0, 253, alpha}
   elseif self.idx == 6 then
     rgba = {58, 114, 222, alpha}
+  end
+  if winning and winning > 0.0 then
+    rgba[1] = rgba[1] + winning*(255-rgba[1])
+    rgba[2] = rgba[2] + winning*(255-rgba[2])
+    rgba[3] = rgba[3] + winning*(255-rgba[3])
   end
   love.graphics.setColor(rgba)
   local ci = self.starti
@@ -97,7 +113,12 @@ function Snake:draw(transparent)
     end
     if c ~= 'H' then
       for i = 1, 16 do
+        if (love.timer.getTime()*30-blink) % 30 < 2 then
+          love.graphics.setColor(255, 255, 255, alpha)
+        end
         love.graphics.draw(img['fire'], lx+(rx-lx)/16*i, ly+(ry-ly)/16*i, 0, 1, 1, 16, 16)
+        love.graphics.setColor(rgba)
+        blink = blink + 1
       end
     end
     lx = rx

@@ -21,16 +21,20 @@ function Level:new(filename)
     i = i + 1
   end
   o.selected = nil
+  o.winning = 0.0
   return o
 end
 
 function Level:draw()
-
   love.graphics.setColor(255, 255, 255, 224)
   for i = 1, 9 do
     for j = 1, hexcnts[i] do
       px = hexx(i,j)
       py = hexy(i,j)
+      if self.winning > 0.0 then
+        px = px + math.random(0,6*self.winning)
+        py = py + math.random(0,6*self.winning)
+      end
       if hex_valid(i,j) then
         love.graphics.draw(img['hex'], px, py, 0, 1, 1, 48, 48)
         -- love.graphics.print(i..','..j, px+8, py+22)
@@ -44,7 +48,7 @@ function Level:draw()
     if self.selected == i then
       s:draw(true)
     else
-      s:draw()
+      s:draw(false, self.winning)
     end
   end
   for i = 1, # self.snakes do
@@ -52,13 +56,16 @@ function Level:draw()
     if self.selected == i then
       s:draw_head(true)
     else
-      s:draw_head()
+      s:draw_head(false, self.winning)
     end
   end
 
 end
 
 function Level:click(x, y, button)
+  if self.winning > 0 then
+    return
+  end
   -- find clicked tile
   ci = nil
   cj = nil
@@ -120,5 +127,21 @@ function Level:click(x, y, button)
         end
       end
     end
+  end
+end
+
+function Level:check_finished()
+  love.audio.play(snd['win'])
+  level.winning = 0.0001
+end
+
+function Level:update()
+  if self.winning > 0.0 then
+    self.winning = self.winning + love.timer.getDelta()/4.7
+    particles:setColor(8, 246, 255, self.winning*128, 255, 255, 255, 128)
+  end
+  if self.winning > 1.0 then
+    particles:setColor(8, 246, 255, 0, 255, 255, 255, 128)
+    level = nil
   end
 end
