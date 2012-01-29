@@ -170,6 +170,8 @@ function Snake:try(newi, newj, newo)
       co = (co + 1) % 6
     elseif c == 'R' then
       co = (co + 2) % 6
+    elseif c == 'T' then
+      return {ci,cj}
     end
     -- update
     if co == 0 then
@@ -198,5 +200,4 @@ function Snake:try(newi, newj, newo)
       end
     end
   end
-  return true
 end

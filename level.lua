@@ -38,7 +38,7 @@ function Level:draw()
           py = py + math.random(0,6*self.winning*self.winning)
         end
         love.graphics.draw(img['hex'], px, py, 0, 1, 1, 48, 48)
---        love.graphics.print(i..','..j, px+8, py+22)
+        -- love.graphics.print(i..','..j, px+8, py+22)
       end
     end
   end
@@ -104,6 +104,7 @@ function Level:click(x, y, button)
           self.snakes[self.selected].starti = ci
           self.snakes[self.selected].startj = cj
           love.audio.play(snd['moveok'])
+          self:check_finished()
         else
           love.audio.play(snd['movebad'])
         end
@@ -123,6 +124,7 @@ function Level:click(x, y, button)
           if s:try(nil, nil, (s.orient + 1) % 6) then
             s.orient = (s.orient + 1) % 6
             love.audio.play(snd['moveok'])
+            self:check_finished()
           else
             love.audio.play(snd['movebad'])
           end
@@ -131,6 +133,7 @@ function Level:click(x, y, button)
           if s:try(nil, nil, (s.orient + 5) % 6) then
             s.orient = (s.orient + 5) % 6
             love.audio.play(snd['moveok'])
+            self:check_finished()
           else
             love.audio.play(snd['movebad'])
           end
@@ -141,8 +144,29 @@ function Level:click(x, y, button)
 end
 
 function Level:check_finished()
-  love.audio.play(snd['win'])
-  level.winning = 0.0001
+
+  local edges = {}
+  local visited = {}
+  for i = 1, # self.snakes do
+    start = self.snakes[i].starti*100 + self.snakes[i].startj
+    fin = self.snakes[i]:try()
+    if fin then
+      fin = fin[1]*100 + fin[2]
+      edges[start] = fin
+    end
+  end
+  c = self.snakes[1].starti*100 + self.snakes[1].startj
+  c = edges[c]
+  l = 0
+  while c and not visited[c] do
+    visited[c] = true
+    c = edges[c]
+    l = l + 1
+  end
+  if l == # self.snakes then
+    love.audio.play(snd['win'])
+    level.winning = 0.0001
+  end
 end
 
 function Level:update()

@@ -83,7 +83,8 @@ function love.keypressed(key, unicode)
     love.event.push('q')
   end
   if key == 'w' then
-    level:check_finished()
+    love.audio.play(snd['win'])
+    level.winning = 0.0001
   end
 end
 
