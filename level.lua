@@ -67,9 +67,20 @@ function Level:click(x, y, button)
   if ci and cj then
     if self.selected then -- holding snake ? => drop it
       if self.snakes[self.selected]:try(ci, cj, nil) then
-        self.snakes[self.selected].starti = ci
-        self.snakes[self.selected].startj = cj
-        love.audio.play(snd['moveok'])
+        local conflict
+        conflict = false
+        for i = 1, # self.snakes do -- test if there is no other snake's head
+          if i ~= self.selected and self.snakes[i].starti == ci and self.snakes[i].startj == cj then
+            conflict = true
+          end
+        end
+        if conflict == false then
+          self.snakes[self.selected].starti = ci
+          self.snakes[self.selected].startj = cj
+          love.audio.play(snd['moveok'])
+        else
+          love.audio.play(snd['movebad'])
+        end
       else
         love.audio.play(snd['movebad'])
       end
