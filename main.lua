@@ -4,6 +4,7 @@ function love.load()
   img = {}
   img['fire'] = love.graphics.newImage('images/fire.png')
   img['hex'] = love.graphics.newImage('images/hex.png')
+  img['hex-light'] = love.graphics.newImage('images/hex-light.png')
   img['intro'] = love.graphics.newImage('images/intro.png')
   snd = {}
   snd['movebad'] = love.audio.newSource('sounds/movebad.ogg', 'static')

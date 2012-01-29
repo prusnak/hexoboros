@@ -28,6 +28,7 @@ end
 
 function Level:draw()
   love.graphics.setColor(255, 255, 255, 224)
+
   for i = 1, 9 do
     for j = 1, hexcnts[i] do
       local px = hexx(i,j)
@@ -42,23 +43,25 @@ function Level:draw()
       end
     end
   end
+
+  if self.selected then
+    local t = self.snakes[self.selected]:try()
+    for k = 1, # t do
+      local tx = hexx(t[k][1], t[k][2])
+      local ty = hexy(t[k][1], t[k][2])
+      love.graphics.draw(img['hex-light'], tx, ty, 0, 1, 1, 64, 64)
+    end
+  end
+
   love.graphics.setColor(255, 255, 255, 255)
 
   for i = 1, # self.snakes do
     s = self.snakes[i]
-    if self.selected == i then
-      s:draw(true)
-    else
-      s:draw(false, self.winning)
-    end
+    s:draw(self.winning)
   end
   for i = 1, # self.snakes do
     s = self.snakes[i]
-    if self.selected == i then
-      s:draw_head(true)
-    else
-      s:draw_head(false, self.winning)
-    end
+    s:draw_head(self.winning)
   end
 
   if self.winning > 0.75 then
@@ -151,6 +154,7 @@ function Level:check_finished()
     start = self.snakes[i].starti*100 + self.snakes[i].startj
     fin = self.snakes[i]:try()
     if fin then
+      fin = fin[# fin]
       fin = fin[1]*100 + fin[2]
       edges[start] = fin
     end
