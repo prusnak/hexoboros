@@ -27,17 +27,17 @@ function Snake:draw(transparent)
     alpha = 255
   end
   if self.idx == 1 then
-    love.graphics.setColor(255, 0, 0, alpha)
+    love.graphics.setColor(249, 23, 32, alpha)
   elseif self.idx == 2 then
-    love.graphics.setColor(0, 255, 0, alpha)
+    love.graphics.setColor(255, 209, 0, alpha)
   elseif self.idx == 3 then
-    love.graphics.setColor(0, 0, 255, alpha)
+    love.graphics.setColor(114, 222, 58, alpha)
   elseif self.idx == 4 then
-    love.graphics.setColor(0, 255, 255, alpha)
+    love.graphics.setColor(0, 214, 253, alpha)
   elseif self.idx == 5 then
-    love.graphics.setColor(255, 0, 255, alpha)
+    love.graphics.setColor(214, 0, 253, alpha)
   elseif self.idx == 6 then
-    love.graphics.setColor(255, 255, 0, alpha)
+    love.graphics.setColor(58, 114, 222, alpha)
   end
   local ci = self.starti
   local cj = self.startj
