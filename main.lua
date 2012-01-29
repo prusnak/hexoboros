@@ -9,6 +9,8 @@ function love.load()
   snd['movebad'] = love.audio.newSource('sounds/movebad.ogg', 'static')
   snd['moveok'] = love.audio.newSource('sounds/moveok.ogg', 'static')
   snd['win'] = love.audio.newSource('sounds/win.ogg', 'static')
+  snd['click'] = love.audio.newSource('sounds/click.ogg', 'static')
+  snd['music'] = love.audio.newSource('sounds/music.ogg')
   font = love.graphics.newFont('images/cs_regular.ttf', 22)
 
   particles = love.graphics.newParticleSystem(img['fire'], 200)
@@ -29,6 +31,9 @@ function love.load()
   particles:setRadialAcceleration(0)
   particles:setTangentialAcceleration(0)
   particles:start()
+
+  snd['music']:setLooping(true)
+  love.audio.play(snd['music'])
 end
 
 function love.update(dt)
@@ -56,11 +61,11 @@ function love.mousepressed(x, y, button)
   if not level then
     if math.abs(y-560) < 40 then
       if math.abs(x-256) < 40 then
-        love.audio.play(snd['moveok'])
+        love.audio.play(snd['click'])
         level = Level:new('level1')
       end
       if math.abs(x-768) < 40 then
-        love.audio.play(snd['moveok'])
+        love.audio.play(snd['click'])
         love.event.push('q')
       end
     end

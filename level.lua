@@ -32,8 +32,8 @@ function Level:draw()
       px = hexx(i,j)
       py = hexy(i,j)
       if self.winning > 0.0 then
-        px = px + math.random(0,6*self.winning)
-        py = py + math.random(0,6*self.winning)
+        px = px + math.random(0,6*self.winning*self.winning)
+        py = py + math.random(0,6*self.winning*self.winning)
       end
       if hex_valid(i,j) then
         love.graphics.draw(img['hex'], px, py, 0, 1, 1, 48, 48)
@@ -137,7 +137,7 @@ end
 
 function Level:update()
   if self.winning > 0.0 then
-    self.winning = self.winning + love.timer.getDelta()/4.7
+    self.winning = self.winning + love.timer.getDelta()/6
     particles:setColor(8, 246, 255, self.winning*128, 255, 255, 255, 128)
   end
   if self.winning > 1.0 then
