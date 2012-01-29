@@ -13,6 +13,9 @@ function love.load()
   img['snakeL'] = love.graphics.newImage('images/snakell.png')
   img['snaker'] = love.graphics.newImage('images/snaker.png')
   img['snakeR'] = love.graphics.newImage('images/snakerr.png')
+  snd = {}
+  snd['movebad'] = love.audio.newSource('sounds/movebad.ogg', 'static')
+  snd['moveok'] = love.audio.newSource('sounds/moveok.ogg', 'static')
   level = Level:new('level2')
 end
 

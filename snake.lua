@@ -39,50 +39,33 @@ function Snake:draw(transparent)
   elseif self.idx == 6 then
     love.graphics.setColor(255, 255, 0, alpha)
   end
-  if not self.starti or not self.startj then
-    ci = 5
-    cj = 5
-    scale = 0.2
-    dx = 0
-    dy = 0
-  else
-    ci = self.starti
-    cj = self.startj
-    scale = 1
-    dx = 0
-    dy = 0
-  end
-  co = self.orient
+  local ci = self.starti
+  local cj = self.startj
+  local co = self.orient
   for c in string.gmatch(self.str, '.') do
     rx = hexx(ci, cj)
     ry = hexy(ci, cj)
-    if rx then
-      rx = rx*scale + dx
-    end
-    if ry then
-      ry = ry*scale + dy
-    end
     if not rx or not ry then
       break
     end
     -- render
     if c == 'H' then
-      love.graphics.draw(img['snakeH'], rx, ry, hexorient[co+1], scale, scale, 48, 48)
+      love.graphics.draw(img['snakeH'], rx, ry, hexorient[co+1], 1, 1, 48, 48)
     elseif c == 'S' then
-      love.graphics.draw(img['snakeS'], rx, ry, hexorient[co+1], scale, scale, 48, 48)
+      love.graphics.draw(img['snakeS'], rx, ry, hexorient[co+1], 1, 1, 48, 48)
     elseif c == 'T' then
-      love.graphics.draw(img['snakeT'], rx, ry, hexorient[co+1], scale, scale, 48, 48)
+      love.graphics.draw(img['snakeT'], rx, ry, hexorient[co+1], 1, 1, 48, 48)
     elseif c == 'l' then
-      love.graphics.draw(img['snakel'], rx, ry, hexorient[co+1], scale, scale, 48, 48)
+      love.graphics.draw(img['snakel'], rx, ry, hexorient[co+1], 1, 1, 48, 48)
       co = (co + 5) % 6
     elseif c == 'L' then
-      love.graphics.draw(img['snakeL'], rx, ry, hexorient[co+1], scale, scale, 48, 48)
+      love.graphics.draw(img['snakeL'], rx, ry, hexorient[co+1], 1, 1, 48, 48)
       co = (co + 4) % 6
     elseif c == 'r' then
-      love.graphics.draw(img['snaker'], rx, ry, hexorient[co+1], scale, scale, 48, 48)
+      love.graphics.draw(img['snaker'], rx, ry, hexorient[co+1], 1, 1, 48, 48)
       co = (co + 1) % 6
     elseif c == 'R' then
-      love.graphics.draw(img['snakeR'], rx, ry, hexorient[co+1], scale, scale, 48, 48)
+      love.graphics.draw(img['snakeR'], rx, ry, hexorient[co+1], 1, 1, 48, 48)
       co = (co + 2) % 6
     end
     -- update
@@ -113,4 +96,52 @@ function Snake:draw(transparent)
     end
   end
   love.graphics.setColor(255, 255, 255, 255)
+end
+
+function Snake:try(newi, newj, newo)
+  local ci = newi or self.starti
+  local cj = newj or self.startj
+  local co = newo or self.orient
+  for c in string.gmatch(self.str, '.') do
+    if not hex_valid(ci, cj) then
+      return false
+    end
+    -- walk through
+    if c == 'l' then
+      co = (co + 5) % 6
+    elseif c == 'L' then
+      co = (co + 4) % 6
+    elseif c == 'r' then
+      co = (co + 1) % 6
+    elseif c == 'R' then
+      co = (co + 2) % 6
+    end
+    -- update
+    if co == 0 then
+      cj = cj + 1
+    elseif co == 1 then
+      ci = ci - 1
+      if ci >= 5 then
+        cj = cj +1
+      end
+    elseif co == 2 then
+      ci = ci - 1
+      if ci < 5 then
+        cj = cj - 1
+      end
+    elseif co == 3 then
+      cj = cj - 1
+    elseif co == 4 then
+      ci = ci + 1
+      if ci > 5 then
+        cj = cj - 1
+      end
+    elseif co == 5 then
+      ci = ci + 1
+      if ci <= 5 then
+        cj = cj + 1
+      end
+    end
+  end
+  return true
 end

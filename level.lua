@@ -12,7 +12,9 @@ function Level:new(filename)
   i = 1
   for l in love.filesystem.lines('levels/' .. filename .. '.lvl') do
     if i < 7 then
-      table.insert(o.snakes, Snake:new(i, l))
+      if string.sub(l, 1, 1) ~= '-' then
+        table.insert(o.snakes, Snake:new(i, l))
+      end
     else
       table.insert(o.tiles, l)
     end
@@ -22,10 +24,6 @@ function Level:new(filename)
   return o
 end
 
-function Level:valid_tile(i,j)
-  return string.sub(self.tiles[j], i, i) == '.'
-end
-
 function Level:draw()
   love.graphics.draw(img['back'], 0, 0)
 
@@ -33,10 +31,10 @@ function Level:draw()
     for j = 1, hexcnts[i] do
       px = hexx(i,j)
       py = hexy(i,j)
-      if self:valid_tile(i,j) then
+      if hex_valid(i,j) then
         love.graphics.draw(img['hex'], px, py, 0, 1, 1, 48, 48 )
+        love.graphics.print(i..','..j, px+8, py+22)
       end
-      love.graphics.print(i..','..j, px+8, py+22)
     end
   end
 
@@ -57,7 +55,9 @@ function Level:click(x, y, button)
   cj = nil
   for i = 1, 9 do
     for j = 1, hexcnts[i] do
-      if math.abs(hexx(i,j)-x) < 40 and math.abs(hexy(i,j)-y) < 40 then
+      rx = hexx(i,j)
+      ry = hexy(i,j)
+      if rx and ry and math.abs(rx-x) < 40 and math.abs(ry-y) < 40 then
         ci = i
         cj = j
       end
@@ -66,8 +66,13 @@ function Level:click(x, y, button)
   -- was there a tile click?
   if ci and cj then
     if self.selected then -- holding snake ? => drop it
-      self.snakes[self.selected].starti = ci
-      self.snakes[self.selected].startj = cj
+      if self.snakes[self.selected]:try(ci, cj, nil) then
+        self.snakes[self.selected].starti = ci
+        self.snakes[self.selected].startj = cj
+        love.audio.play(snd['moveok'])
+      else
+        love.audio.play(snd['movebad'])
+      end
       self.selected = nil
       return
     end
@@ -78,10 +83,20 @@ function Level:click(x, y, button)
           self.selected = i
         end
         if button == 'r' then
-          s.orient = (s.orient + 1) % 6
+          if s:try(nil, nil, (s.orient + 1) % 6) then
+            s.orient = (s.orient + 1) % 6
+            love.audio.play(snd['moveok'])
+          else
+            love.audio.play(snd['movebad'])
+          end
         end
         if button == 'm' then
-          s.orient = (s.orient + 5) % 6
+          if s:try(nil, nil, (s.orient + 5) % 6) then
+            s.orient = (s.orient + 5) % 6
+            love.audio.play(snd['moveok'])
+          else
+            love.audio.play(snd['movebad'])
+          end
         end
       end
     end
