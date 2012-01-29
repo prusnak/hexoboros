@@ -4,6 +4,7 @@ function love.load()
   img = {}
   img['fire'] = love.graphics.newImage('images/fire.png')
   img['hex'] = love.graphics.newImage('images/hex.png')
+  img['intro'] = love.graphics.newImage('images/intro.png')
   img['slot'] = love.graphics.newImage('images/slot.png')
   img['header'] = love.graphics.newImage('images/header.png')
   img['snakeH'] = love.graphics.newImage('images/snakeh.png')
@@ -16,6 +17,7 @@ function love.load()
   snd = {}
   snd['movebad'] = love.audio.newSource('sounds/movebad.ogg', 'static')
   snd['moveok'] = love.audio.newSource('sounds/moveok.ogg', 'static')
+  font = love.graphics.newFont('images/cs_regular.ttf', 22)
 
   particles = love.graphics.newParticleSystem(img['fire'], 200)
   particles:setPosition(512, 384)
@@ -35,7 +37,7 @@ function love.load()
   particles:setRadialAcceleration(0)
   particles:setTangentialAcceleration(0)
   particles:start()
-  level = Level:new('level1')
+--  level = Level:new('level1')
 end
 
 function love.update(dt)
@@ -44,11 +46,31 @@ end
 
 function love.draw()
   love.graphics.draw(particles, 0, 0)
-  level:draw()
+  if not level then
+    love.graphics.draw(img['intro'], 0, 0)
+    love.graphics.draw(img['hex'], 256, 576, 0, 1, 1, 48, 48)
+    love.graphics.draw(img['hex'], 768, 576, 0, 1, 1, 48, 48)
+    love.graphics.setFont(font)
+    love.graphics.printf('start', 258, 560, 0, 'center')
+    love.graphics.printf('exit', 770, 560, 0, 'center')
+  else
+    level:draw()
+  end
 end
 
 function love.mousepressed(x, y, button)
-  level:click(x, y, button)
+  if not level then
+    if math.abs(y-560) < 40 then
+      if math.abs(x-256) < 40 then
+        level = Level:new('level1')
+      end
+      if math.abs(x-768) < 40 then
+        love.event.push('q')
+      end
+    end
+  else
+    level:click(x, y, button)
+  end
 end
 
 function love.mousereleased(x, y, button)

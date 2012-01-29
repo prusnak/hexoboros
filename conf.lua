@@ -1,5 +1,5 @@
 function love.conf(t)
-  t.title = "HEXoboros"
+  t.title = "hexoboros"
   t.author = "stick"
   t.screen.width = 1024
   t.screen.height = 768

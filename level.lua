@@ -26,14 +26,14 @@ end
 
 function Level:draw()
 
-  love.graphics.setColor(255, 255, 255, 192)
+  love.graphics.setColor(255, 255, 255, 224)
   for i = 1, 9 do
     for j = 1, hexcnts[i] do
       px = hexx(i,j)
       py = hexy(i,j)
       if hex_valid(i,j) then
-        love.graphics.draw(img['hex'], px, py, 0, 1, 1, 48, 48 )
-        love.graphics.print(i..','..j, px+8, py+22)
+        love.graphics.draw(img['hex'], px, py, 0, 1, 1, 48, 48)
+        -- love.graphics.print(i..','..j, px+8, py+22)
       end
     end
   end
