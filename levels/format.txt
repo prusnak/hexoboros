@@ -1,0 +1,21 @@
+Level format
+------------
+
+* each level file is a simple text file
+* it has 15 (6+9) lines
+* first 6 lines are definitions of the snakes
+  - if you don't want to use all 6 snakes just use '-' to ignore the snake
+  - snake definition looks like this:
+    - position of the snake (row and column, two numbers, each 1-9)
+    - orientation of the snake (one number, 0-5, 0 is down, 1 is left-down, etc.)
+    - shape of the snake
+      - every snake starts with a head (H) and ends with a tail (T)
+      - between them you can insert the following parts:
+        - S - straight part
+        - l - slow turn left
+        - L - sharp turn left
+        - r - slow turn left
+        - R - sharp turn left
+* the next 9 lines are definition of the board
+  - '.' means the cell is usable
+  - 'X' means the cell is missing (unusable for play)
