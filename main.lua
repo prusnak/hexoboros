@@ -64,7 +64,7 @@ function love.mousepressed(x, y, button)
     if math.abs(y-560) < 40 then
       if math.abs(x-256) < 40 then
         love.audio.play(snd['click'])
-        level = Level:new('level1')
+        level = Level:new('level')
       end
       if math.abs(x-768) < 40 then
         love.audio.play(snd['click'])

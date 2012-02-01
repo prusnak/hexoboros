@@ -180,10 +180,6 @@ function Level:update()
   end
   if self.winning > 1.0 then
     particles:setColor(8, 246, 255, 0, 255, 255, 255, 128)
-    if self.title == 'level1' then
-      level = Level:new('level2')
-    else
-      level = nil
-    end
+    level = nil
   end
 end
