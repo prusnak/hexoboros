@@ -19,3 +19,5 @@ Level format
 * the next 9 lines are definition of the board
   - '.' means the cell is usable
   - 'X' means the cell is missing (unusable for play)
+
+See other level files for examples ...
