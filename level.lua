@@ -71,7 +71,7 @@ function Level:draw()
   end
   love.graphics.setColor(255, 255, 255, 255)
 
-  love.graphics.print(self.title, 10, 10)
+  love.graphics.print('Level: ' .. self.title, 10, 10)
 
 end
 
@@ -180,6 +180,7 @@ function Level:update()
   end
   if self.winning > 1.0 then
     particles:setColor(8, 246, 255, 0, 255, 255, 255, 128)
+    gamestate = 'chooser'
     level = nil
   end
 end
