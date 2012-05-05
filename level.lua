@@ -176,10 +176,10 @@ end
 function Level:update()
   if self.winning > 0.0 then
     self.winning = self.winning + love.timer.getDelta()/6
-    particles:setColor(8, 246, 255, self.winning*128, 255, 255, 255, 128)
+    particles:setColors(8, 246, 255, self.winning*128, 255, 255, 255, 128)
   end
   if self.winning > 1.0 then
-    particles:setColor(8, 246, 255, 0, 255, 255, 255, 128)
+    particles:setColors(8, 246, 255, 0, 255, 255, 255, 128)
     gamestate = 'chooser'
     level = nil
   end

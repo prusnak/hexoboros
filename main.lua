@@ -21,8 +21,8 @@ function love.load()
   particles:setEmissionRate(200)
   particles:setLifetime(-1)
   particles:setParticleLife(5)
-  particles:setColor(8, 246, 255, 0, 255, 255, 255, 128)
-  particles:setSize(1, 3, 1)
+  particles:setColors(8, 246, 255, 0, 255, 255, 255, 128)
+  particles:setSizes(1, 3)
   particles:setSpeed(150, 300)
   particles:setDirection(math.rad(90))
   particles:setSpread(math.rad(360))
@@ -58,13 +58,13 @@ function love.draw()
     love.graphics.draw(img['hex'], 256, 576, 0, 1, 1, 48, 48)
     love.graphics.draw(img['hex'], 768, 576, 0, 1, 1, 48, 48)
     love.graphics.setFont(font)
-    love.graphics.printf('Play', 258, 560, 0, 'center')
-    love.graphics.printf('Exit', 770, 560, 0, 'center')
+    love.graphics.printf('Play', 258, 571, 0, 'center')
+    love.graphics.printf('Exit', 770, 571, 0, 'center')
   elseif gamestate == 'chooser' then
     for i = 1, 10 do
       for j = 1, 8 do
         love.graphics.draw(img['hex'], 93.1*i, 85.3*j, 0, 1, 1, 48, 48)
-        love.graphics.printf(i+j*10-10, 93.1*i, 85.3*j-13, 0, 'center')
+        love.graphics.printf(i+j*10-10, 93.1*i+2, 85.3*j-3, 0, 'center')
       end
     end
   else -- level
@@ -81,7 +81,7 @@ function love.mousepressed(x, y, button)
       end
       if math.abs(x-768) < 40 then
         love.audio.play(snd['click'])
-        love.event.push('q')
+        love.event.push('quit')
       end
     end
   elseif gamestate == 'chooser' then
@@ -106,7 +106,7 @@ end
 function love.keypressed(key, unicode)
   if gamestate == 'intro' then
     if key == 'escape' then
-      love.event.push('q')
+      love.event.push('quit')
     end
   elseif gamestate == 'chooser' then
     if key == 'escape' then
