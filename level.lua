@@ -9,20 +9,39 @@ function Level:new(filename)
   setmetatable(o, Level)
   o.snakes = {}
   o.tiles = {}
-  i = 1
-  for l in love.filesystem.lines('levels/' .. filename .. '.lvl') do
-    if i < 7 then
-      if string.sub(l, 1, 1) ~= '-' then
-        table.insert(o.snakes, Snake:new(i, l))
+  if filename then
+    i = 1
+    for l in love.filesystem.lines('levels/' .. filename .. '.lvl') do
+      if i < 7 then
+        if string.sub(l, 1, 1) ~= '-' then
+          table.insert(o.snakes, Snake:new(i, l))
+        end
+      else
+        table.insert(o.tiles, l)
       end
-    else
-      table.insert(o.tiles, l)
-    end
-    i = i + 1
+      i = i + 1
+    o.title = filename
+  end
+  else
+    table.insert(o.snakes, Snake:new(1, '124HlT'))
+    table.insert(o.snakes, Snake:new(2, '415HlT'))
+    table.insert(o.snakes, Snake:new(3, '810HlT'))
+    table.insert(o.snakes, Snake:new(4, '941HlT'))
+    table.insert(o.snakes, Snake:new(5, '682HlT'))
+    table.insert(o.snakes, Snake:new(6, '263HlT'))
+    table.insert(o.tiles, '.........')
+    table.insert(o.tiles, '.........')
+    table.insert(o.tiles, '.........')
+    table.insert(o.tiles, '.........')
+    table.insert(o.tiles, '.........')
+    table.insert(o.tiles, ' ....... ')
+    table.insert(o.tiles, '  .....  ')
+    table.insert(o.tiles, '   ...   ')
+    table.insert(o.tiles, '    .    ')
+    o.title = 'random'
   end
   o.selected = nil
   o.winning = 0.0
-  o.title = filename
   return o
 end
 
@@ -180,7 +199,9 @@ function Level:update()
   end
   if self.winning > 1.0 then
     particles:setColors(8, 246, 255, 0, 255, 255, 255, 128)
-    gamestate = 'chooser'
-    level = nil
+    -- gamestate = 'chooser'
+    -- level = nil
+    level = Level:new(nil)
+    gamestate = 'level'
   end
 end

@@ -77,7 +77,10 @@ function love.mousepressed(x, y, button)
     if math.abs(y-560) < 40 then
       if math.abs(x-256) < 40 then
         love.audio.play(snd['click'])
-        gamestate = 'chooser'
+--      gamestate = 'chooser'
+--      generate random level instead of level chooser for now
+        gamestate = 'level'
+        level = Level:new(nil)
       end
       if math.abs(x-768) < 40 then
         love.audio.play(snd['click'])
@@ -114,7 +117,7 @@ function love.keypressed(key, unicode)
     end
   else -- level
     if key == 'escape' then
-      gamestate = 'chooser'
+      gamestate = 'intro'
       level = nil
     elseif key == 'w' then
       love.audio.play(snd['win'])
