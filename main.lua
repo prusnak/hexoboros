@@ -1,6 +1,8 @@
 require 'level'
 
 function love.load()
+  love.window.setMode(1024, 768, {fullscreen=false})
+
   img = {}
   img['fire'] = love.graphics.newImage('images/fire.png')
   img['hex'] = love.graphics.newImage('images/hex.png')
@@ -19,14 +21,14 @@ function love.load()
   particles:setOffset(0, 0)
   particles:setBufferSize(1000)
   particles:setEmissionRate(200)
-  particles:setLifetime(-1)
-  particles:setParticleLife(5)
+  particles:setEmitterLifetime(-1)
+  particles:setParticleLifetime(5)
   particles:setColors(8, 246, 255, 0, 255, 255, 255, 128)
   particles:setSizes(1, 3)
   particles:setSpeed(150, 300)
   particles:setDirection(math.rad(90))
   particles:setSpread(math.rad(360))
-  particles:setGravity(0, 0)
+  particles:setLinearAcceleration(0, 0, 0, 0)
   particles:setRotation(math.rad(0), math.rad(0))
   particles:setSpin(math.rad(0.5), math.rad(1), 1)
   particles:setRadialAcceleration(0)
