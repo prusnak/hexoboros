@@ -1,7 +1,13 @@
 require 'level'
 
+function love.resize(w, h)
+  width, height = love.window.getDimensions()
+  scale = height * 4 / 3 / 1024
+end
+
 function love.load()
-  love.window.setMode(1024, 768, {fullscreen=false})
+
+  love.resize(love.window.getWidth(), love.window.getHeight())
 
   img = {}
   img['fire'] = love.graphics.newImage('images/fire.png')
@@ -17,7 +23,7 @@ function love.load()
   font = love.graphics.newFont('images/cs_regular.ttf', 22)
 
   particles = love.graphics.newParticleSystem(img['fire'], 200)
-  particles:setPosition(512, 384)
+  particles:setPosition(width / 2, height / 2)
   particles:setOffset(0, 0)
   particles:setBufferSize(1000)
   particles:setEmissionRate(200)
@@ -46,8 +52,6 @@ function love.update(dt)
   particles:update(dt)
   if gamestate == 'intro' then
     -- nothing
-  elseif gamestate == 'chooser' then
-    -- nothing
   else -- level
     level:update()
   end
@@ -56,19 +60,12 @@ end
 function love.draw()
   love.graphics.draw(particles, 0, 0)
   if gamestate == 'intro' then
-    love.graphics.draw(img['intro'], 0, 0)
-    love.graphics.draw(img['hex'], 256, 576, 0, 1, 1, 48, 48)
-    love.graphics.draw(img['hex'], 768, 576, 0, 1, 1, 48, 48)
+    love.graphics.draw(img['intro'], width / 2, height / 2, 0, scale, scale, 512, 384)
+    love.graphics.draw(img['hex'], width / 4, height * 0.75, 0, scale, scale, 48, 48)
+    love.graphics.draw(img['hex'], width * 0.75, height * 0.75, 0, scale, scale, 48, 48)
     love.graphics.setFont(font)
-    love.graphics.printf('Play', 258, 571, 0, 'center')
-    love.graphics.printf('Exit', 770, 571, 0, 'center')
-  elseif gamestate == 'chooser' then
-    for i = 1, 10 do
-      for j = 1, 8 do
-        love.graphics.draw(img['hex'], 93.1*i, 85.3*j, 0, 1, 1, 48, 48)
-        love.graphics.printf(i+j*10-10, 93.1*i+2, 85.3*j-3, 0, 'center')
-      end
-    end
+    love.graphics.printf('Play', width / 4, height * 0.75 - 5 * scale, 0, 'center')
+    love.graphics.printf('Exit', width * 0.75, height * 0.75 - 5 * scale, 0, 'center')
   else -- level
     level:draw()
   end
@@ -76,32 +73,16 @@ end
 
 function love.mousepressed(x, y, button)
   if gamestate == 'intro' then
-    if math.abs(y-560) < 40 then
-      if math.abs(x-256) < 40 then
+    if math.abs(y - height * 0.75) < 40 then
+      if math.abs(x - width / 4) < 40 then
         love.audio.play(snd['click'])
---      gamestate = 'chooser'
---      generate random level instead of level chooser for now
         gamestate = 'level'
         level = Level:new(nil)
       end
-      if math.abs(x-768) < 40 then
+      if math.abs(x- width * 0.75) < 40 then
         love.audio.play(snd['click'])
         love.event.push('quit')
       end
-    end
-  elseif gamestate == 'chooser' then
-    local lvlnum = 0
-    for i = 1, 10 do
-      for j = 1, 8 do
-        if math.abs(x-93.1*i) < 40 and math.abs(y-85.3*j) < 40 then
-          lvlnum = i+j*10-10
-        end
-      end
-    end
-    if lvlnum > 0 then
-      level = Level:new(lvlnum)
-      gamestate = 'level'
-      love.audio.play(snd['click'])
     end
   else -- level
     level:click(x, y, button)
@@ -112,10 +93,6 @@ function love.keypressed(key, unicode)
   if gamestate == 'intro' then
     if key == 'escape' then
       love.event.push('quit')
-    end
-  elseif gamestate == 'chooser' then
-    if key == 'escape' then
-      gamestate = 'intro'
     end
   else -- level
     if key == 'escape' then

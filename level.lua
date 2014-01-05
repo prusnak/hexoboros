@@ -57,8 +57,7 @@ function Level:draw()
           px = px + math.random(0,6*self.winning*self.winning)
           py = py + math.random(0,6*self.winning*self.winning)
         end
-        love.graphics.draw(img['hex'], px, py, 0, 1, 1, 48, 48)
-        -- love.graphics.print(i..','..j, px+8, py+22)
+        love.graphics.draw(img['hex'], px, py, 0, scale, scale, 48, 48)
       end
     end
   end
@@ -68,7 +67,7 @@ function Level:draw()
     for k = 1, # t do
       local tx = hexx(t[k][1], t[k][2])
       local ty = hexy(t[k][1], t[k][2])
-      love.graphics.draw(img['hex-light'], tx, ty, 0, 1, 1, 64, 64)
+      love.graphics.draw(img['hex-light'], tx, ty, 0, scale, scale, 64, 64)
     end
   end
 
@@ -91,8 +90,8 @@ function Level:draw()
   love.graphics.setColor(255, 255, 255, 255)
 
   love.graphics.print('Level: ' .. self.title, 10, 10)
-  love.graphics.draw(img['hex'], 1024-48, 48, 0, 1, 1, 48, 48)
-  love.graphics.printf('Menu', 1024-48, 48-5, 0, 'center')
+  love.graphics.draw(img['hex'], width-48 * scale, 48 * scale, 0, scale, scale, 48, 48)
+  love.graphics.printf('Menu', width-48 * scale, (48 - 5) * scale, 0, 'center')
 
 end
 
@@ -101,7 +100,7 @@ function Level:click(x, y, button)
     return
   end
   -- menu clicked
-  if x > 940 and y < 88 then
+  if x > width - 88 * scale and y < 88 * scale then
       gamestate = 'intro'
       level = nil
       return
@@ -113,7 +112,7 @@ function Level:click(x, y, button)
     for j = 1, hexcnts[i] do
       rx = hexx(i,j)
       ry = hexy(i,j)
-      if rx and ry and math.abs(rx-x) < 40 and math.abs(ry-y) < 40 then
+      if rx and ry and math.abs(rx-x) < 40 * scale and math.abs(ry-y) < 40 * scale then
         ci = i
         cj = j
       end
@@ -207,8 +206,6 @@ function Level:update()
   end
   if self.winning > 1.0 then
     particles:setColors(8, 246, 255, 0, 255, 255, 255, 128)
-    -- gamestate = 'chooser'
-    -- level = nil
     level = Level:new(nil)
     gamestate = 'level'
   end

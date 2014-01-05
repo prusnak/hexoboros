@@ -51,10 +51,10 @@ function Snake:draw_head(winning)
   end
   rx = rx + math.random(0,8*winning*winning)
   ry = ry + math.random(0,8*winning*winning)
-  love.graphics.draw(img['fire'], rx, ry, 0, 2, 2, 16, 16)
-  love.graphics.draw(img['fire'], rx, ry, 0, 2, 2, 16, 16)
-  love.graphics.draw(img['fire'], rx, ry, 0, 2, 2, 16, 16)
-  love.graphics.draw(img['fire'], rx, ry, 0, 2, 2, 16, 16)
+  love.graphics.draw(img['fire'], rx, ry, 0, 2 * scale, 2 * scale, 16, 16)
+  love.graphics.draw(img['fire'], rx, ry, 0, 2 * scale, 2 * scale, 16, 16)
+  love.graphics.draw(img['fire'], rx, ry, 0, 2 * scale, 2 * scale, 16, 16)
+  love.graphics.draw(img['fire'], rx, ry, 0, 2 * scale, 2 * scale, 16, 16)
   love.graphics.setColor(255, 255, 255, 255)
 end
 
@@ -114,7 +114,7 @@ function Snake:draw(winning)
         end
         local tx = lx+(rx-lx)/16*i + math.random(0,8*winning*winning)
         local ty = ly+(ry-ly)/16*i + math.random(0,8*winning*winning)
-        love.graphics.draw(img['fire'], tx, ty, 0, 1, 1, 16, 16)
+        love.graphics.draw(img['fire'], tx, ty, 0, scale, scale, 16, 16)
         love.graphics.setColor(rgba)
         blink = blink + 1
       end

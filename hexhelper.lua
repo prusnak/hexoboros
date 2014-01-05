@@ -7,7 +7,7 @@ end
 
 function hexx(i, j)
   if hex_valid(i, j) then
-    return 512 + 74*(i-5)
+    return width / 2 + 74 * (i-5) * scale
   else
     return nil
   end
@@ -15,7 +15,7 @@ end
 
 function hexy(i, j)
   if hex_valid(i, j) then
-    return 352 + j*82 - hexcnts[i]*41
+    return height * 0.445 + (j * 82 - hexcnts[i]*41) * scale
   else
     return nil
   end
