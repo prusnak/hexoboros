@@ -91,12 +91,20 @@ function Level:draw()
   love.graphics.setColor(255, 255, 255, 255)
 
   love.graphics.print('Level: ' .. self.title, 10, 10)
+  love.graphics.draw(img['hex'], 1024-48, 48, 0, 1, 1, 48, 48)
+  love.graphics.printf('Menu', 1024-48, 48-5, 0, 'center')
 
 end
 
 function Level:click(x, y, button)
   if self.winning > 0 then
     return
+  end
+  -- menu clicked
+  if x > 940 and y < 88 then
+      gamestate = 'intro'
+      level = nil
+      return
   end
   -- find clicked tile
   ci = nil
