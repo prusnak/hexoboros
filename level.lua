@@ -82,16 +82,16 @@ function Level:draw()
     s:draw_head(self.winning)
   end
 
-  if self.winning > 0.75 then
-    local a = (self.winning - 0.75) * 4
-    love.graphics.setColor(255, 255, 255, a*a*255)
-    love.graphics.rectangle('fill', 0, 0, 1024, 768)
-  end
-  love.graphics.setColor(255, 255, 255, 255)
-
   love.graphics.print('Level: ' .. self.title, 10, 10)
   love.graphics.draw(img['hex'], width-48 * scale, 48 * scale, 0, scale, scale, 48, 48)
   love.graphics.printf('Menu', width-48 * scale, (48 - 5) * scale, 0, 'center')
+
+  if self.winning > 0.75 then
+    local a = (self.winning - 0.75) * 4
+    love.graphics.setColor(255, 255, 255, a*a*255)
+    love.graphics.rectangle('fill', 0, 0, width, height)
+  end
+  love.graphics.setColor(255, 255, 255, 255)
 
 end
 
