@@ -1,7 +1,7 @@
 require 'level'
 
 function love.resize(w, h)
-  width, height = love.window.getDimensions()
+  width, height = w, h
   scale = height * 4 / 3 / 1024
 end
 
