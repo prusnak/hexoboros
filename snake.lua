@@ -1,7 +1,6 @@
 require 'hexhelper'
 
-Snake = {}
-Snake.__index = Snake
+Snake = class()
 
 -- orientation
 --   3
@@ -9,15 +8,12 @@ Snake.__index = Snake
 -- 1   5
 --   0
 
-function Snake:new(idx, str)
-  local o = {}
-  setmetatable(o, Snake)
-  o.idx = idx
-  o.starti = tonumber(string.sub(str,1,1))
-  o.startj = tonumber(string.sub(str,2,2))
-  o.orient = tonumber(string.sub(str,3,3))
-  o.str = string.sub(str,4,-1)
-  return o
+function Snake:__init(idx, str)
+  self.idx = idx
+  self.starti = tonumber(string.sub(str,1,1))
+  self.startj = tonumber(string.sub(str,2,2))
+  self.orient = tonumber(string.sub(str,3,3))
+  self.str = string.sub(str,4,-1)
 end
 
 function Snake:draw_head(winning)

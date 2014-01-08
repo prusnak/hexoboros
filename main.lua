@@ -1,3 +1,5 @@
+class = require '30log'
+
 require 'level'
 
 function love.resize(w, h)
