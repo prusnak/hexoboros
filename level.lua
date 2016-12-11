@@ -78,9 +78,9 @@ function Level:draw()
     s:draw_head(self.winning)
   end
 
-  love.graphics.print('Level: ' .. self.title, 10, 10)
-  love.graphics.draw(img['hex'], width-48 * scale, 48 * scale, 0, scale, scale, 48, 48)
-  love.graphics.printf('Menu', width-48 * scale, (48 - 5) * scale, 0, 'center')
+  love.graphics.print('Level: ' .. self.title, 10, 10, 0, scale, scale)
+  love.graphics.draw(img['hex'], width - 48 * scale, 48 * scale, 0, scale, scale, 48, 48)
+  love.graphics.print('Menu', width - 48 * scale, (48 - 5) * scale, 0, scale, scale, font:getWidth('Menu') / 2, 0)
 
   if self.winning > 0.75 then
     local a = (self.winning - 0.75) * 4
@@ -142,10 +142,10 @@ function Level:click(x, y, button)
     for i = 1, # self.snakes do -- find snake
       s = self.snakes[i]
       if s.starti == ci and s.startj == cj then
-        if button == 'l' then
+        if button == 1 then
           self.selected = i
         end
-        if button == 'r' then
+        if button == 2 then
           if s:try(nil, nil, (s.orient + 1) % 6) then
             s.orient = (s.orient + 1) % 6
             love.audio.play(snd['moveok'])
@@ -154,7 +154,7 @@ function Level:click(x, y, button)
             love.audio.play(snd['movebad'])
           end
         end
-        if button == 'm' then
+        if button == 3 then
           if s:try(nil, nil, (s.orient + 5) % 6) then
             s.orient = (s.orient + 5) % 6
             love.audio.play(snd['moveok'])

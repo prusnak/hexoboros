@@ -5,11 +5,15 @@ require 'level'
 function love.resize(w, h)
   width, height = w, h
   scale = height * 4 / 3 / 1024
+  if particles then
+    particles:setPosition(width / 2, height / 2)
+    particles:reset()
+  end
 end
 
 function love.load()
 
-  love.resize(love.window.getWidth(), love.window.getHeight())
+  love.resize(love.graphics.getWidth(), love.graphics.getHeight())
 
   img = {}
   img['fire'] = love.graphics.newImage('images/fire.png')
@@ -66,8 +70,8 @@ function love.draw()
     love.graphics.draw(img['hex'], width / 4, height * 0.75, 0, scale, scale, 48, 48)
     love.graphics.draw(img['hex'], width * 0.75, height * 0.75, 0, scale, scale, 48, 48)
     love.graphics.setFont(font)
-    love.graphics.printf('Play', width / 4, height * 0.75 - 5 * scale, 0, 'center')
-    love.graphics.printf('Exit', width * 0.75, height * 0.75 - 5 * scale, 0, 'center')
+    love.graphics.print('Play', width / 4, height * 0.75 - 5 * scale, 0, scale, scale, font:getWidth('Play') / 2, 0)
+    love.graphics.print('Exit', width * 0.75, height * 0.75 - 5 * scale, 0, scale, scale, font:getWidth('Exit') / 2, 0)
   else -- level
     level:draw()
   end
