@@ -19,17 +19,17 @@ end
 function Snake:draw_head(winning)
   local rgba
   if self.idx == 1 then
-    rgba = {249, 23, 32, 255}
+    rgba = {249, 23, 32, 1}
   elseif self.idx == 2 then
-    rgba = {255, 209, 0, 255}
+    rgba = {255, 209, 0, 1}
   elseif self.idx == 3 then
-    rgba = {114, 222, 58, 255}
+    rgba = {114, 222, 58, 1}
   elseif self.idx == 4 then
-    rgba = {0, 214, 253, 255}
+    rgba = {0, 214, 253, 1}
   elseif self.idx == 5 then
-    rgba = {214, 0, 253, 255}
+    rgba = {214, 0, 253, 1}
   elseif self.idx == 6 then
-    rgba = {58, 114, 222, 255}
+    rgba = {58, 114, 222, 1}
   end
   local ticks = 30
   if winning and winning > 0.0 then
@@ -41,7 +41,7 @@ function Snake:draw_head(winning)
   rx = hexx(self.starti, self.startj)
   ry = hexy(self.starti, self.startj)
   if (love.timer.getTime()*ticks-4) % 30 < 2 then
-    love.graphics.setColor(255, 255, 255, 255)
+    love.graphics.setColor(255, 255, 255, 1)
   else
     love.graphics.setColor(rgba)
   end
@@ -51,24 +51,24 @@ function Snake:draw_head(winning)
   love.graphics.draw(img['fire'], rx, ry, 0, 2 * scale, 2 * scale, 16, 16)
   love.graphics.draw(img['fire'], rx, ry, 0, 2 * scale, 2 * scale, 16, 16)
   love.graphics.draw(img['fire'], rx, ry, 0, 2 * scale, 2 * scale, 16, 16)
-  love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.setColor(255, 255, 255, 1)
 end
 
 function Snake:draw(winning)
   local blink = 0
   local rgba
   if self.idx == 1 then
-    rgba = {249, 23, 32, 255}
+    rgba = {249, 23, 32, 1}
   elseif self.idx == 2 then
-    rgba = {255, 209, 0, 255}
+    rgba = {255, 209, 0, 1}
   elseif self.idx == 3 then
-    rgba = {114, 222, 58, 255}
+    rgba = {114, 222, 58, 1}
   elseif self.idx == 4 then
-    rgba = {0, 214, 253, 255}
+    rgba = {0, 214, 253, 1}
   elseif self.idx == 5 then
-    rgba = {214, 0, 253, 255}
+    rgba = {214, 0, 253, 1}
   elseif self.idx == 6 then
-    rgba = {58, 114, 222, 255}
+    rgba = {58, 114, 222, 1}
   end
   local ticks = 30
   if winning and winning > 0.0 then
@@ -106,7 +106,7 @@ function Snake:draw(winning)
     if c ~= 'H' then
       for i = 1, 16 do
         if (love.timer.getTime()*ticks-blink) % 30 < 2 then
-          love.graphics.setColor(255, 255, 255, 255)
+          love.graphics.setColor(255, 255, 255, 1)
         end
         local tx = lx+(rx-lx)/16*i + math.random(0,8*winning*winning)
         local ty = ly+(ry-ly)/16*i + math.random(0,8*winning*winning)
@@ -144,7 +144,7 @@ function Snake:draw(winning)
       end
     end
   end
-  love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.setColor(255, 255, 255, 1)
 end
 
 function Snake:try(newi, newj, newo)

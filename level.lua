@@ -42,7 +42,7 @@ function Level:__init(filename)
 end
 
 function Level:draw()
-  love.graphics.setColor(255, 255, 255, 224)
+  love.graphics.setColor(255, 255, 255, 0.85)
 
   for i = 1, 9 do
     for j = 1, hexcnts[i] do
@@ -67,7 +67,7 @@ function Level:draw()
     end
   end
 
-  love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.setColor(255, 255, 255, 1)
 
   for i = 1, # self.snakes do
     s = self.snakes[i]
@@ -84,10 +84,10 @@ function Level:draw()
 
   if self.winning > 0.75 then
     local a = (self.winning - 0.75) * 4
-    love.graphics.setColor(255, 255, 255, a*a*255)
+    love.graphics.setColor(255, 255, 255, a*a)
     love.graphics.rectangle('fill', 0, 0, width, height)
   end
-  love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.setColor(255, 255, 255, 1)
 
 end
 
@@ -198,10 +198,10 @@ end
 function Level:update()
   if self.winning > 0.0 then
     self.winning = self.winning + love.timer.getDelta()/6
-    particles:setColors(8, 246, 255, self.winning*128, 255, 255, 255, 128)
+    particles:setColors(8, 246, 255, self.winning * 0.5, 255, 255, 255, 0.5)
   end
   if self.winning > 1.0 then
-    particles:setColors(8, 246, 255, 0, 255, 255, 255, 128)
+    particles:setColors(8, 246, 255, 0, 255, 255, 255, 0.5)
     level = Level:new(nil)
     gamestate = 'level'
   end
